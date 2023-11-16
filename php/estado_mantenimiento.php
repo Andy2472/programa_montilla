@@ -1,3 +1,22 @@
+<?php
+include("./conexion.php");
+
+// Obtener el código pasado como parámetro GET
+$codigo = isset($_GET['codigo']) ? $_GET['codigo'] : null;
+
+// Consultar la base de datos para obtener la información según el código
+$consulta = "SELECT * FROM ficha_tecnica WHERE codigo = ?";
+$stmtConsulta = $conexion->prepare($consulta);
+$stmtConsulta->bind_param("s", $codigo);
+$stmtConsulta->execute();
+$resultado = $stmtConsulta->get_result();
+$fichaTecnica = $resultado->fetch_assoc();
+$stmtConsulta->close();
+
+// Cierre la conexión a la base de datos
+$conexion->close();
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -15,8 +34,21 @@
                 <i class="fas fa-check-circle"></i>
             </div>
             <div class="status-text">
-                <h2>Mantenimiento en Progreso</h2>
-                <p>El mantenimiento de tu equipo se encuentra en proceso.</p>
+                <?php if ($fichaTecnica) : ?>
+                    <h2>Estado: <?php echo $fichaTecnica['estado'] ?? 'Desconocido'; ?></h2>
+                    <p>Tipo: <?php echo $fichaTecnica['tipo_pc'] ?? 'Desconocido'; ?></p>
+                    <p>Marca: <?php echo $fichaTecnica['marca'] ?? 'Desconocido'; ?></p>
+                    <p>Ram: <?php echo $fichaTecnica['marca_ram'] ?? 'Desconocido'; ?></p>
+                    <p>Cantidad: <?php echo $fichaTecnica['cantidad_ram'] ?? 'Desconocido'; ?></p>
+                    <p>CPU: <?php echo $fichaTecnica['marca_cpu'] ?? 'Desconocido'; ?></p>
+                    <p>Nucleos: <?php echo $fichaTecnica['cantidad_nucleos'] ?? 'Desconocido'; ?></p>
+                    <p>Motherboard: <?php echo $fichaTecnica['marca_Motherboard'] ?? 'Desconocido'; ?></p>
+                    <p>Disco Duro: <?php echo $fichaTecnica['disco_duro'] ?? 'Desconocido'; ?></p>
+                    <p><?php echo $fichaTecnica['nombre_dueño'] ?? 'Desconocido'; ?></p>
+                <?php else : ?>
+                    <h2>Desconocido</h2>
+                    <p>No se encontró información para el código proporcionado.</p>
+                <?php endif; ?>
             </div>
         </div>
         <div class="actions">
