@@ -16,11 +16,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $codigo = $_POST["codigo"];
 
     // Actualizar los datos en la tabla ficha_tecnica
-    // Actualizar los datos en la tabla ficha_tecnica
     $sql = "UPDATE ficha_tecnica SET estado=?, tipo_pc=?, marca=?, marca_ram=?, cantidad_ram=?, marca_cpu=?, cantidad_nucleos=?, marca_Motherboard=?, disco_duro=? WHERE codigo=?";
     $stmt = $conexion->prepare($sql);
     $stmt->bind_param("ssssssssss", $estado, $tipo_pc, $marca, $marca_ram, $cantidad_ram, $marca_cpu, $cantidad_nucleos, $marca_Motherboard, $disco_duro, $codigo);
-
 
     if ($stmt->execute()) {
         echo "Datos actualizados correctamente.";
@@ -57,13 +55,66 @@ $conexion->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Actualizar Ficha Técnica</title>
-    <link rel="stylesheet" href="estilo_actualizar.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 60%;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            margin-top: 50px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            display: grid;
+            gap: 10px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #03C4EB;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0184A9;
+        }
+
+        p {
+            color: red;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>Actualizar Ficha Técnica</h1>
         <?php if ($fichaTecnica) : ?>
             <form method="post" action="">
+           
                 <label for="estado">Estado:</label>
                 <input type="text" name="estado" value="<?php echo $fichaTecnica['estado']; ?>">
 
@@ -90,10 +141,14 @@ $conexion->close();
 
                 <label for="disco_duro">Disco Duro:</label>
                 <input type="text" name="disco_duro" value="<?php echo $fichaTecnica['disco_duro']; ?>">
+                <label for="disco_duro">codigo:</label>
+                <input type="text" name="codigo" value="<?php echo $codigo; ?>">
+                
+                <button type="submit">Actualizar</button>
 
                 <input type="hidden" name="codigo" value="<?php echo $codigo; ?>">
                 
-                <button type="submit">Actualizar</button>
+                
             </form>
         <?php else : ?>
             <p>No se encontró información para el código proporcionado.</p>

@@ -1,4 +1,4 @@
-<?php 
+<?php
 include("./conexion.php");
 
 if ($conexion->connect_error) {
@@ -62,8 +62,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmtPendientes->bind_param("ssssi", $name, $email, $subject, $message, $idFicha);
 
         if ($stmtPendientes->execute()) {
-            echo "<h1>Solicitud enviada. Por favor, verifica el estado de tu equipo con este código: $codigo</h1> <br>";
-            echo '<a href="estado.php" class="boton-estado"><button>Ver estado de equipo</button></a>';
+            echo "<!DOCTYPE html>
+    <html lang='es'>
+    <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <title>Tu Título</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+            }
+
+            .centrar {
+                text-align: center;
+                margin-top: 20px; /* Ajusta el margen según sea necesario */
+            }
+
+            .boton-estado button {
+                background-color: #03C4EB;
+                color: white;
+                padding: 10px 15px;
+                border: none;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                cursor: pointer;
+            }
+
+            .boton-estado button:hover {
+                background-color: #03C4EB;
+            }
+        </style>
+    </head>
+    <body>";
+
+echo "<h1>Solicitud enviada. Por favor, verifica el estado de tu equipo con este código: $codigo</h1> <br>";
+echo '<div class="centrar"><a href="estado.php" class="boton-estado"><button>Ver estado de equipo</button></a></div>';
+
+echo "</body></html>";
         } else {
             echo "Error al registrar los datos en pendientes: " . $conexion->error;
         }
