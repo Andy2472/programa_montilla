@@ -141,8 +141,6 @@ $conexion->close();
 
                 <label for="disco_duro">Disco Duro:</label>
                 <input type="text" name="disco_duro" value="<?php echo $fichaTecnica['disco_duro']; ?>">
-                <label for="disco_duro">codigo:</label>
-                <input type="text" name="codigo" value="<?php echo $codigo; ?>">
                 
                 <button type="submit">Actualizar</button>
 
